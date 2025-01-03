@@ -1,0 +1,85 @@
+name: Auto Label and Link Related Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label-and-link:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract shortname, add label, and link related issues
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueBody = context.payload.issue.body || "";
+            const issueNumber = context.payload.issue.number;
+
+            // 正则表达式寻找 "shortname: VALUE"
+            const match = issueBody.match(/shortname:\s*([a-zA-Z0-9_-]+)/i);
+            if (match && match[1]) {
+              const shortname = match[1];
+              const labelName = `s:${shortname}`;
+              const labelColor = "6bc5c6";
+
+              // 创建或检查标签是否存在
+              const labels = await github.rest.issues.listLabelsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+
+              const existingLabel = labels.data.find(label => label.name === labelName);
+              if (!existingLabel) {
+                // 创建新的标签
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: labelName,
+                  color: labelColor,
+                  description: `Automatically created label for shortname: ${shortname}`,
+                });
+                console.log(`Label '${labelName}' created with color #${labelColor}.`);
+              } else {
+                console.log(`Label '${labelName}' already exists.`);
+              }
+
+              // 添加标签到当前 Issue
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                labels: [labelName],
+              });
+              console.log(`Label '${labelName}' added to issue #${issueNumber}.`);
+
+              // 检查 w3c/apa-review 仓库中的相关 Issue
+              const relatedIssues = await github.rest.issues.listForRepo({
+                owner: "w3c",
+                repo: "apa-review",
+                labels: labelName,
+                state: "open",
+              });
+
+              if (relatedIssues.data.length > 0) {
+                // 构建关联 Issue 的评论内容
+                const relatedLinks = relatedIssues.data
+                  .map(issue => `- [#${issue.number}](${issue.html_url}): ${issue.title}`)
+                  .join("\n");
+
+                const commentBody = `Related issue from APA WG:${relatedLinks}`;
+
+                // 在当前 Issue 添加评论
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: commentBody,
+                });
+                console.log(`Added comment linking related issues from w3c/apa-review.`);
+              } else {
+                console.log(`No related issues found in w3c/apa-review.`);
+              }
+            } else {
+              console.log("No shortname found in the issue body.");
+            }
