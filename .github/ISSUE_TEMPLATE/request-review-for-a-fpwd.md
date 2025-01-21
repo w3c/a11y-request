@@ -14,7 +14,6 @@ If you still want us to review your spec, please provide the information below.
 In the issue title above add the document name followed by the date of this request.
 
 - name of spec to be reviewed:
-- shortname:
 - URL of spec:
 
 - Do you need a reply by a particular date?
