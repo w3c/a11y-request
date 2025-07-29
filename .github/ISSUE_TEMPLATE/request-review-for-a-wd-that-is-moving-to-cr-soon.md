@@ -1,7 +1,7 @@
 ---
 name: Request review for a WD that is moving to CR soon
 about: Use this if you have a transition date coming up, and need to get a final review.
-title: Document_name 2021-mm-dd > 2021-mm-dd
+title: Document_name YYYY-MM-DD > YYYY-MM-DD
 labels: LC, pending, REVIEW REQUESTED
 assignees: ''
 

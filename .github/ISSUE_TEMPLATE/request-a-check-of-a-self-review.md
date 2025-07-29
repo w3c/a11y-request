@@ -2,7 +2,7 @@
 name: Request a check of a self-review
 about: If you have completed a self-review, use this form to request that APA check
   it out.
-title: Spec_name 2021-mm-dd
+title: Spec_name YYYY-MM-DD
 labels: pending, REVIEW REQUESTED, SR, WD
 assignees: ''
 
