@@ -1,7 +1,7 @@
 ---
 name: Request review for a spec in CR
 about: If your spec is already in CR, use this form.
-title: Document_name 2021-mm-dd > 2021-mm-dd
+title: Document_name YYYY-MM-DD > YYYY-MM-DD
 labels: CR, pending, REVIEW REQUESTED
 assignees: ''
 

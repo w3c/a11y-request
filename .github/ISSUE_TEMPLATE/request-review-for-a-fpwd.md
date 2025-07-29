@@ -1,7 +1,7 @@
 ---
 name: Request review for a FPWD
 about: Use this if you are approaching or have just passed FPWD.
-title: Document_name 2021-mm-dd
+title: Document_name YYYY-MM-DD
 labels: FPWD, pending, REVIEW REQUESTED
 assignees: ''
 

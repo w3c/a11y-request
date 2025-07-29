@@ -1,7 +1,7 @@
 ---
 name: Request review for another type of spec
 about: If your spec doesn't fit one of the other options, use this.
-title: Document_name 2021-mm-dd > 2021-mm-dd
+title: Document_name YYYY-MM-DD > YYYY-MM-DD
 labels: pending, REVIEW REQUESTED, WD
 assignees: ''
 
